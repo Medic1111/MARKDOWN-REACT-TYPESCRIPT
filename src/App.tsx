@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useReducer } from "react";
+import { marked } from "marked";
+import Header from "./components/Header/Header";
+import MainWrapper from "./components/MainWrapper/MainWrapper";
+import Input from "./components/Input/Input";
+import displayRed, { INITIAL_STATE } from "./reducers/displayRed";
+import Browser from "./components/Browser/Browser";
+import Html from "./components/Html/Html";
 
 function App() {
+  const [input, setInput] = useState("");
+  const [state, dispatch] = useReducer(displayRed, INITIAL_STATE);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header dispatch={dispatch} />
+      <MainWrapper>
+        {state.markdown && <Input input={input} setInput={setInput} />}
+        {state.browser && <Browser input={marked(input)} />}
+        {state.html && <Html input={marked(input)} />}
+      </MainWrapper>
+    </>
   );
 }
 
